@@ -1,0 +1,39 @@
+.container-fluid{
+  height: 88vh;
+  background: #000;
+}
+.box{
+  width: 30vw;
+  height: 84vh;
+  background: #019FE8;
+  display: inline-block;
+}
+.box-title{
+  background: white;
+  height: 15vh;
+}
+.box-title h2 {
+  line-height: 15vh;
+  color: #3B3A38;
+  margin: 0;
+}
+.box-bianhao .text-center{
+  color: white;
+}
+
+.box-qrcode{
+  margin-top: 10vh;
+}
+.box-qrcode-canvas{
+  margin: 0 auto;
+  width: 256px;
+}
+.box-footer h2{
+  color: white;
+}
+.btn-box{
+  display: inline-block;
+}
+
+
+

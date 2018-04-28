@@ -1,0 +1,170 @@
+<div class="productionline">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-xs-12 index">人员管理</div>
+    </div>
+    <div class="row options">
+      <div class="col-xs-12">
+        <button type="button" class="btn btn-default" (click)="openProLineAdd(add)">
+          <span class="glyphicon glyphicon-plus"></span>增加
+        </button>
+        <button type="button" class="btn btn-default" (click)="openProLine(modify)">
+          <span class="glyphicon glyphicon-pencil"></span>修改
+        </button>
+        <button type="button" class="btn btn-default" (click)="deleteProLine()">
+          <span class="glyphicon glyphicon-trash"></span>删除
+        </button>
+        <button type="button" class="btn btn-default" (click)="fileAllUp(fileInput)">
+          <span class="glyphicon glyphicon-search"></span>导入excel表
+        </button>
+        <button type="button" class="btn btn-default" (click)="exportAs('xlsx')">
+          <span class="glyphicon glyphicon-search"></span>导出excel表
+        </button>
+        <input #fileInput type="file" ng2FileSelect [uploader]="uploader" (change)="selectedFileOnChanged($event)" style="display: none"/>
+      </div>
+    </div>
+    <div class="row content">
+      <div class="col-xs-12">
+        <table class="table table-responsive table-bordered" id="mytable">
+          <thead>
+          <tr>
+            <th class="checkboxoption">
+              <input type="checkbox" (click)="getAllCheckBoxStatus($event)">选中/未选中
+            </th>
+            <th>编号</th>
+            <th>姓名</th>
+            <th>电话</th>
+            <th>报名人次</th>
+            <th>身份证号</th>
+            <th>扫描时间</th>
+            <th>备注</th>
+            <th>生成二维码</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr *ngFor="let proline of ProductionLines; let i = index">
+            <td><input type="checkbox" checked="{{checked}}" (click)="getCheckBoxStatus($event, i)"></td>
+            <td>{{proline['number']}}</td>
+            <td>{{proline['name']}}</td>
+            <td>{{proline['phone']}}</td>
+            <td>{{proline['num']}}</td>
+            <td>{{proline['card']}}</td>
+            <td>{{proline['time']| date:'yyyy-MM-dd'}} </td>
+            <td>{{proline['remark']}}</td>
+            <td>
+              <button class="btn btn-danger" (click)="onQrcode(proline.id,proline.number)">点击生成二维码</button>
+            </td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="row text-center">
+      <div class="col-xs-12">
+        <div class="pagination">
+          <ul class="pagination">
+            <li><a (click)="firstPage()">首页</a></li>
+            <li><a (click)="previousPage()">上一页</a></li>
+            <li><a (click)="nextPage()">下一页</a></li>
+            <li><a (click)="lastPage()">尾页</a></li>
+            <li><a>{{nowPage}}/{{num}}</a></li>
+            <li><a>跳转到: &nbsp;<input type="number" name="skpPage"  class="skip-input" [(ngModel)]="skpPage" (keydown)="appointPage($event)">页</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-xs-12">
+        <router-outlet></router-outlet>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!--增加人员模态框-->
+<ng-template #add>
+  <div class="modal-header">
+    <h4 class="modal-title pull-left">人员增加</h4>
+  </div>
+  <div class="modal-body">
+    <form class="form-horizontal" [formGroup]="prolineAddForm">
+      <div class="form-group">
+        <label for="addNumber">编号:</label>
+        <input type="text" class="form-control" formControlName="number" id="addNumber">
+      </div>
+      <div class="form-group">
+        <label for="addName">姓名:</label>
+        <input type="text" class="form-control" formControlName="name" id="addName">
+      </div>
+      <div class="form-group">
+        <label for="addPhone">电话:</label>
+        <input type="text" class="form-control" formControlName="phone" id="addPhone">
+      </div>
+      <div class="form-group">
+        <label for="addCard">身份证:</label>
+        <input type="text" class="form-control" formControlName="card" name="card" id="addCard">
+      </div>
+      <div class="form-group">
+        <label for="addRemark">备注:</label>
+        <input type="text"  class="form-control" formControlName="remark" id="addRemark">
+      </div>
+    </form>
+    <div class="clearfix"></div>
+    <br>
+    <div class="text-center">
+      <button type="button" class="btn btn-info" aria-label="Close" (click)="prolineAdd(); modalRef.hide()">
+        确定增加
+      </button>
+      <button type="button" class="btn btn-danger" aria-label="Close" (click)="modalRef.hide()">
+        返回
+      </button>
+    </div>
+    <br>
+  </div>
+</ng-template>
+<!--修改人员模态框-->
+<ng-template #modify>
+  <div class="modal-header">
+    <h4 class="modal-title pull-left">用户信息修改</h4>
+    <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <form class="form-horizontal" [formGroup]="prolineModifyForm">
+      <div class="form-group">
+        <label for="updateNumber">编号:</label>
+        <input type="text" class="form-control" formControlName="number" id="updateNumber">
+      </div>
+      <div class="form-group">
+        <label for="updateName">姓名:</label>
+        <input type="text" class="form-control" formControlName="name" id="updateName">
+      </div>
+      <div class="form-group">
+        <label for="updatePhone">电话:</label>
+        <input type="text" class="form-control" formControlName="phone" id="updatePhone">
+      </div>
+      <div class="form-group">
+        <label for="updateCard">身份证:</label>
+        <input type="text" class="form-control" formControlName="card" name="card" id="updateCard">
+      </div>
+      <div class="form-group">
+        <label for="updateRemark">备注:</label>
+        <input type="text"  class="form-control" formControlName="remark" id="updateRemark">
+      </div>
+    </form>
+    <div class="clearfix"></div>
+    <br>
+    <div class="text-center">
+      <button type="button" class="btn btn-info" aria-label="Close" (click)="prolineModify(); modalRef.hide()">
+        确定修改
+      </button>
+      <button type="button" class="btn btn-danger" aria-label="Close" (click)="modalRef.hide()">
+        返回
+      </button>
+    </div>
+    <br>
+  </div>
+</ng-template>
+
