@@ -7,6 +7,7 @@ import {ReactiveFormsModule} from '@angular/forms';
 import {GlobalService} from './shared/global.service';
 import {ReqService} from './shared/req.service';
 import { ExportAsModule } from 'ngx-export-as';
+import {HashLocationStrategy, LocationStrategy} from '@angular/common';
 
 @NgModule({
   imports: [
@@ -19,7 +20,7 @@ import { ExportAsModule } from 'ngx-export-as';
   declarations: [
     AppComponent,
   ],
-  providers: [GlobalService, ReqService],
+  providers: [GlobalService, ReqService,{provide: LocationStrategy, useClass: HashLocationStrategy}],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
