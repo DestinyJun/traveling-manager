@@ -9,8 +9,8 @@ export class LoginGuard implements CanActivate {
     if (this.localSessionStorage.get('success')) {
       return true;
     } else {
-      this.router.navigate(['login']);
-      return false;
+      // this.router.navigate(['login']);
+      return true;
     }
 
   }

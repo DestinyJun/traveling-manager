@@ -4,19 +4,22 @@ import {QRCodeModule} from 'angularx-qrcode';
 import {QrcodeComponent} from './qrcode.component';
 import {QrcodeRoutersModule} from './qrcode.routers.module';
 import {ModalModule, PaginationModule} from 'ngx-bootstrap';
-import {ReactiveFormsModule} from '@angular/forms';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
+import {ChildComponent} from './child/child.component';
 @NgModule({
   imports: [
     CommonModule,
     QrcodeRoutersModule,
     ModalModule.forRoot(),
     PaginationModule,
+    FormsModule,
     ReactiveFormsModule,
     QRCodeModule
   ],
   declarations: [
-    QrcodeComponent
+    QrcodeComponent,
+    ChildComponent
   ],
-  providers: [],
+  entryComponents: [ChildComponent]
 })
 export class  QrcodeModule { }

@@ -1,0 +1,21 @@
+<div class="container-fluid">
+  <div class="box">
+    <div class="box-title">
+      <h2 class="text-center text-danger">
+        畅游贵州地图
+      </h2>
+    </div>
+    <div class="box-qrcode text-center" >
+      <div class="box-qrcode-canvas">
+        <qrcode [qrdata]="localhostPathUrl" [size]="size" [level]="'L'"></qrcode>
+      </div>
+    </div>
+    <div class="box-bianhao">
+      <h4 class="text-center">编号：YLQX-{{number}}</h4>
+    </div>
+    <div class="box-footer">
+      <h2 class="text-center">迎君一路黔行</h2>
+    </div>
+  </div>
+</div>
+

@@ -1,15 +1,15 @@
 .container-fluid{
   background: #000;
+
 }
 .box{
-  width: 30vw;
-  height: 84vh;
   background: #019FE8;
   display: inline-block;
 }
 .box-title{
   background: white;
   height: 15vh;
+  padding: 0 20px;
 }
 .box-title h2 {
   line-height: 15vh;
@@ -22,10 +22,10 @@
 
 .box-qrcode{
   margin-top: 10vh;
+  padding: 20px 50px;
 }
 .box-qrcode-canvas{
   margin: 0 auto;
-  width: 256px;
 }
 .box-footer h2{
   color: white;

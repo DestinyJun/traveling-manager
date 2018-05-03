@@ -6,6 +6,7 @@ import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {MainComponent} from './main.component';
 import {MainRoutersModule} from './main.routers.module';
 import { ExportAsModule } from 'ngx-export-as';
+import {CustomFormsModule} from 'ng4-validators';
 
 @NgModule({
   imports: [
@@ -16,6 +17,7 @@ import { ExportAsModule } from 'ngx-export-as';
     AlertModule.forRoot(),
     FormsModule,
     ReactiveFormsModule,
+    CustomFormsModule,
     ExportAsModule
   ],
   declarations: [

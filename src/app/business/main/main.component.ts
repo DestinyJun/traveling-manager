@@ -2,10 +2,11 @@ import {Component, OnInit, TemplateRef} from '@angular/core';
 import {BsModalRef, BsModalService} from 'ngx-bootstrap';
 import {PageBody, DeviceProductionLineList} from '../../shared/global.service';
 import {ReqService} from '../../shared/req.service';
-import {FormBuilder, FormGroup, Validators} from '@angular/forms';
+import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
 import {FileItem, FileUploader, ParsedResponseHeaders} from 'ng2-file-upload';
 import {ExportAsConfig, ExportAsService} from 'ngx-export-as';
 import {Router} from '@angular/router';
+import {CustomValidators} from 'ng4-validators';
 
 @Component({
   selector: 'app-main',
@@ -24,6 +25,12 @@ export class MainComponent implements OnInit {
   public checked: string;
   public nowPage: number;
   public skpPage: string;
+  // 表单字段
+  public numberForm: any;
+  public nameForm: any;
+  public phoneForm: any;
+  public cardForm: any;
+  public remarkForm: any;
   // 文件导出
   public config: ExportAsConfig = {
     type: 'xlsx',
@@ -32,7 +39,7 @@ export class MainComponent implements OnInit {
   // 上传文件
   public uploader: FileUploader = new FileUploader({
     url: 'http://192.168.0.108:8080/import/file/upload',
-    method: 'GET',
+    method: 'POST',
     itemAlias: 'uploadedfile',
     autoUpload: false,
     allowedFileType: ['xls', 'xlsx'],
@@ -53,19 +60,18 @@ export class MainComponent implements OnInit {
     this.Update();
     // 增加模态框表单
     this.prolineAddForm = fb.group({
-        number: ['', Validators.required],
-        name: ['', Validators.required],
-        phone: ['', Validators.required],
-        card: ['', Validators.required],
-        remark: ['', Validators.required]
+        number: ['', [Validators.required, CustomValidators.number, CustomValidators.rangeLength([5, 5])]],
+        name: ['', [Validators.required]],
+        phone: ['', [Validators.required, CustomValidators.number, CustomValidators.rangeLength([11, 11]) ]],
+        card: ['', [Validators.required, CustomValidators.rangeLength([18, 18])]],
+        remark: ['']
       });
     // 修改模态框表单
     this.prolineModifyForm = fb.group({
-      number: ['', Validators.required],
-      name: ['', Validators.required],
-      phone: ['', Validators.required],
-      card: ['', Validators.required],
-      remark: ['', Validators.required]
+      name: ['', [Validators.required]],
+      phone: ['', [Validators.required, CustomValidators.number, CustomValidators.rangeLength([11, 11]) ]],
+      card: ['', [Validators.required, CustomValidators.rangeLength([18, 18])]],
+      remark: ['']
     });
   }
 
@@ -119,11 +125,19 @@ export class MainComponent implements OnInit {
   // 增加用户
   public prolineAdd(): void {
     console.log(this.prolineAddForm.value);
-    this.req.addUser(this.prolineAddForm.value)
-      .subscribe(data => {
-        window.alert(data.msg);
-        this.Update();
-      });
+    if (this.prolineAddForm.valid) {
+      this.req.addUser(this.prolineAddForm.value)
+        .subscribe(data => {
+          if (!data.success) {
+            window.alert( data.msg);
+            return;
+          }
+          window.alert(data.msg);
+          this.Update();
+        });
+    }else {
+      window.alert('请输入合参数');
+    }
   }
 
   //  修改表格内容
@@ -133,9 +147,15 @@ export class MainComponent implements OnInit {
     if (this.prolineModifyForm.valid) {
      this.req.updateUser(this.prolineModifyForm.value)
         .subscribe(res => {
-          console.log(res);
+          if (!res.success) {
+            window.alert( res.msg);
+            return;
+          }
+          window.alert( res.msg);
           this.Update();
         });
+    } else {
+      window.alert('请输入合参数');
     }
   }
 
@@ -228,53 +248,10 @@ export class MainComponent implements OnInit {
     this.modalRef = this.modalService.show(template);
   }
 
-  // ***********************************上传文件******************************
-
-  // 点击input
-  public fileAllUp (event): any {
-    event.click();
-  }
-  //  文件选择完成后的操作处理
-  public selectedFileOnChanged(event) {
-    // 值改变就上传
-    this.uploader.uploadAll();
-    let wordfiles = event.srcElement.files[0];
-    console.log(wordfiles);
-    console.log('文件名是：' + wordfiles.name +  '文件大小是：' + wordfiles.size);
-    // 这里是核心！！！读取操作就是由它完成的。
-    let reader = new FileReader();
-    // 读取文件的内容
-    reader.readAsText(wordfiles, 'gb2312');
-    reader.onload = function(){
-      // 当读取完成之后会回调这个函数，然后此时文件的内容存储到了result中。直接操作即可。
-      // console.log(this.result);
-    };
-    // 读取文件错误时触发
-    reader.onerror = function () {
-      console.log(this);
-    };
-  }
-
-  // 取消上传
-  public fileAllCancel(): any {
-    this.uploader.cancelAll();
-  }
-
-  // 删除上传列表
-  public fileAllDelete(): any {
-    this.uploader.clearQueue();
-  }
-
-  // 导出xls文件
-  public exportAs(type) {
-    this.config.type = type;
-    this.exportAsService.get(this.config).subscribe(content => {
-      this.exportAsService.download('myfile', content);
-    });
-  }
-
   // 生成二维码
   public onQrcode(id, number) {
     this.route.navigate(['/home/qrcode', id, number]);
   }
+
+  // ***********************************上传文件******************************
 }

@@ -3,7 +3,7 @@
     <div class="login-box text-center">
       <p>欢迎登陆旅游管理系统</p>
       <form class="form-horizontal" [formGroup]="myFromModule" (submit)="onLoginSubmit()" >
-        <div class="form-group">
+        <div class="form-group has-error" [ngClass]="{'has-error': usernameForm.invalid && (usernameForm.dirty || usernameForm.touched)}">
           <label for="username" class="col-sm-2 control-label">
             <i class="fa fa-user"></i>
           </label>
@@ -19,6 +19,7 @@
             <input type="password" class="form-control" id="password" placeholder="请输入密码" formControlName="password">
           </div>
         </div>
+        <!--登陆-->
         <div class="form-group">
           <div class="btn-login">
             <button type="submit" class="btn btn-danger btn-block">登录</button>

@@ -3,6 +3,7 @@ import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {ReqService} from '../shared/req.service';
 import {GlobalService} from '../shared/global.service';
 import {Router} from '@angular/router';
+import {CustomValidators} from 'ng4-validators';
 
 @Component({
   selector: 'app-login',
@@ -15,6 +16,9 @@ export class LoginComponent implements OnInit {
   // 本地字段
   public loginSuccess: boolean;
   public loginMsg: string;
+  // 表单字段
+  public usernameForm: any;
+  public passwordForm: any;
   constructor(
     private router: Router,
     private fb: FormBuilder,
@@ -26,6 +30,8 @@ export class LoginComponent implements OnInit {
       username: ['', [Validators.required]],
       password: ['' , [Validators.required, Validators.minLength(6)]]
     });
+    this.usernameForm = this.myFromModule.get('username');
+    this.passwordForm = this.myFromModule.get('password');
   }
   ngOnInit() {}
   public onLoginSubmit() {

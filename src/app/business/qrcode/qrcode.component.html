@@ -1,24 +1,11 @@
 <div class="container-fluid">
-  <div class="box">
-    <div class="box-title">
-      <h2 class="text-center text-danger">
-        畅游贵州地图
-      </h2>
-    </div>
-    <div class="box-qrcode text-center">
-      <div class="box-qrcode-canvas">
-        <qrcode [qrdata]="localhostPathUrl" [size]="size" [level]="'L'"></qrcode>
-      </div>
-   </div>
-    <div class="box-bianhao">
-      <h4 class="text-center">编号：YLQX-{{number}}</h4>
-    </div>
-    <div class="box-footer">
-      <h2 class="text-center">迎君一路黔行</h2>
-    </div>
+  <div class="pull-left" style="margin-top: 15px">
+    <div #dyncomp></div>
   </div>
- <!-- <div class="btn-box">
-    <button class="btn btn-success" (click)="amplification()">放大</button>
-    <button class="btn btn-danger"  (click)="shrink()">缩小</button>
-  </div>-->
+  <div class="box-input pull-right" style="height: 150px;margin-top: 20px">
+    <input [(ngModel)]="size">
+    <button class="btn btn-danger" (click)="onClick()">点击生成二维码</button>
+    <button class="btn btn-default" (click)="onClickDestroy()">删除重新生成</button>
+    <h5><span style="color: white">您输入的尺寸是：{{size}}</span></h5>
+  </div>
 </div>
