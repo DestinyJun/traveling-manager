@@ -25,6 +25,8 @@ export class MainComponent implements OnInit {
   public checked: string;
   public nowPage: number;
   public skpPage: string;
+  public formData: FormData;
+  public file: any;
   // 表单字段
   public numberForm: any;
   public nameForm: any;
@@ -53,6 +55,8 @@ export class MainComponent implements OnInit {
     public fb: FormBuilder,
     private exportAsService: ExportAsService
   ) {
+    this.req.test({page: 1});
+    this.formData = new FormData();
     // 对表格的初始化
     this.skpPage = '1';
     this.pageBody = new PageBody(1, 6);
@@ -75,7 +79,9 @@ export class MainComponent implements OnInit {
     });
   }
 
-  ngOnInit() {}
+  ngOnInit() {
+
+  }
 
   // 全选 或 全不选
   public getAllCheckBoxStatus(e): void {
@@ -254,4 +260,20 @@ export class MainComponent implements OnInit {
   }
 
   // ***********************************上传文件******************************
+  // 选择文件
+  public getFile(event): void {
+    this.file = event.target.files[0];
+    this.formData.append('file', event.target.files[0]);
+    console.log(this.formData);
+  }
+  // 文件上传
+  public uploadfile(): void {
+    // this.req.test({page: 1});
+  }
+
+  public test() {
+    this.req.test({page: 1}).subscribe(
+      value => console.log(value)
+    );
+  }
 }

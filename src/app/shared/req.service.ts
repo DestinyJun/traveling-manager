@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
 import {Observable} from 'rxjs/Observable';
-import {HttpClient} from '@angular/common/http';
+import {HttpClient, HttpHeaders} from '@angular/common/http';
 
 @Injectable()
 export class ReqService {
+  public headers = { headers: new HttpHeaders({'Content-Type': 'multipart/form-data'})};
 
   constructor(private http: HttpClient) { }
   // 登陆验证
@@ -43,14 +44,29 @@ export class ReqService {
   }
 
   // 文件上传
-  public importFile(params): Observable<any> {
-    console.log(params);
-    return this.http.get('/import/user/import', {params});
+  public importFile(body): Observable<any> {
+    let headers = new HttpHeaders();
+    headers.append('Content-Type', 'multipart/form-data');
+    headers.append('Accept', 'application/json');
+    return this.http.post('/test/upload/spring', body, {
+      headers: headers,
+    });
   }
 
   // 文件导出
   public exportFile(params): Observable<any> {
     console.log(params);
     return this.http.get('/import/user/export', {params});
+  }
+
+  // 测试接口
+  public test(body): Observable<any> {
+    console.log(body);
+    return this.http.post('/test/upload/spring1', body);
+  }
+
+  // 用户管理查询
+  public getUsersManager(body): Observable<any> {
+    return this.http.post('http://120.78.137.182/element-admin/user/query', body);
   }
 }

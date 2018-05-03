@@ -14,7 +14,7 @@
         <button type="button" class="btn btn-default" (click)="deleteProLine()">
           <span class="glyphicon glyphicon-trash"></span>删除
         </button>
-        <button type="button" class="btn btn-default">
+        <button type="button" class="btn btn-default" (click)="uploadClick()">
           <span class="glyphicon glyphicon-search"></span>导入excel表
         </button>
         <button type="button" class="btn btn-default">
@@ -79,7 +79,16 @@
     </div>
   </div>
 
-
+  <form class="form-horizontal" (submit)="uploadfile()">
+    <div class="form-group">
+      <label>上传文件:</label>
+      <div>
+        <input type="file" (change)="getFile($event)" class="form-control">
+      </div>
+    </div>
+    <input type="submit" class="btn btn-success" value="上传">
+  </form>
+  <button class="btn btn-danger" (click)="test()">测试按钮</button>
 <!--增加人员模态框-->
 <ng-template #add>
   <div class="modal-header">
