@@ -291,7 +291,10 @@ export class MainComponent implements OnInit {
     this.req.fileExport().subscribe(
       value => {
         if (value.success) {
-          window.open('http://www.hry520.com/upload/user.xlsx');
+          let a = window.confirm('导出成功');
+          if (a) {
+            window.open('http://www.hry520.com/upload/user.xlsx');
+          }
         }
       }
     );

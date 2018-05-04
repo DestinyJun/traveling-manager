@@ -44,10 +44,12 @@ export class LoginComponent implements OnInit {
               this.localSessionStorage.set(i, data[i]);
             }
           }
+          window.alert('登陆成功');
           this.router.navigate(['/home']);
         } else {
           this.loginSuccess = data.success;
           this.loginMsg = data.msg;
+          window.alert(data.msg);
         }
       });
     } else {
