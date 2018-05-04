@@ -1,5 +1,4 @@
 import {
-  AfterContentInit,
   Component,
   ComponentFactoryResolver,
   ComponentRef,
@@ -16,7 +15,7 @@ import {ChildComponent} from './child/child.component';
   templateUrl: './qrcode.component.html',
   styleUrls: ['./qrcode.component.css']
 })
-export class QrcodeComponent implements OnInit, AfterContentInit {
+export class QrcodeComponent implements OnInit {
   @ViewChild('dyncomp', {read: ViewContainerRef})
   dyncomp: ViewContainerRef;
   comp1: ComponentRef<ChildComponent>;
@@ -25,6 +24,7 @@ export class QrcodeComponent implements OnInit, AfterContentInit {
   public number: string;
   public size: number;
   public personId: number;
+  public flag = 0;
   constructor(
     private localtions: GlobalService,
     private routerInfo: ActivatedRoute,
@@ -37,14 +37,19 @@ export class QrcodeComponent implements OnInit, AfterContentInit {
   }
   ngOnInit() {}
   public onClick() {
-    const childComp = this.resolver.resolveComponentFactory(ChildComponent);
-    this.comp1 = this.dyncomp.createComponent(childComp);
-    this.comp1.instance.localhostPathUrl = this.localhostPathUrl;
-    this.comp1.instance.size = this.size;
-    this.comp1.instance.number = this.number;
+    if (this.flag === 0) {
+      const childComp = this.resolver.resolveComponentFactory(ChildComponent);
+      this.comp1 = this.dyncomp.createComponent(childComp);
+      this.comp1.instance.localhostPathUrl = this.localhostPathUrl;
+      this.comp1.instance.size = this.size;
+      this.comp1.instance.number = this.number;
+      this.flag = 1;
+    } else {
+      window.alert('请删除后重新生成');
+    }
   }
-  ngAfterContentInit(): void {}
   public onClickDestroy(): void {
     this.comp1.destroy();
+    this.flag = 0;
   }
 }

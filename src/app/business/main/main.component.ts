@@ -3,11 +3,9 @@ import {BsModalRef, BsModalService} from 'ngx-bootstrap';
 import {PageBody, DeviceProductionLineList} from '../../shared/global.service';
 import {ReqService} from '../../shared/req.service';
 import {FormBuilder, FormControl, FormGroup, Validators} from '@angular/forms';
-import {FileItem, FileUploader, ParsedResponseHeaders} from 'ng2-file-upload';
-import {ExportAsConfig, ExportAsService} from 'ngx-export-as';
+import {FileUploader} from 'ng2-file-upload';
 import {Router} from '@angular/router';
 import {CustomValidators} from 'ng4-validators';
-
 @Component({
   selector: 'app-main',
   templateUrl: './main.component.html',
@@ -25,38 +23,22 @@ export class MainComponent implements OnInit {
   public checked: string;
   public nowPage: number;
   public skpPage: string;
-  public formData: FormData;
   public file: any;
-  // 表单字段
-  public numberForm: any;
-  public nameForm: any;
-  public phoneForm: any;
-  public cardForm: any;
-  public remarkForm: any;
-  // 文件导出
-  public config: ExportAsConfig = {
-    type: 'xlsx',
-    elementId: 'mytable',
-  };
+  public formData: FormData = new FormData();
+  public fileDate: FormData = new FormData();
+  // public file: any;
   // 上传文件
   public uploader: FileUploader = new FileUploader({
-    url: 'http://192.168.0.108:8080/import/file/upload',
+    url: '/test/upload/spring',
     method: 'POST',
-    itemAlias: 'uploadedfile',
-    autoUpload: false,
-    allowedFileType: ['xls', 'xlsx'],
-    removeAfterUpload: true,
-    isHTML5: true
+    itemAlias: 'uploadfile',
   });
   constructor(
     public route: Router,
     public modalService: BsModalService,
     public req: ReqService,
     public fb: FormBuilder,
-    private exportAsService: ExportAsService
   ) {
-    this.req.test({page: 1});
-    this.formData = new FormData();
     // 对表格的初始化
     this.skpPage = '1';
     this.pageBody = new PageBody(1, 6);
@@ -120,7 +102,7 @@ export class MainComponent implements OnInit {
   public Update(): void {
     this.req.getUserList(this.pageBody).subscribe(
       (value) => {
-        console.log(value);
+        // console.log(value);
         this.num = Math.ceil(value.total / 6);
         this.ProductionLines = value.rows;
         this.hasChecked = [];
@@ -260,20 +242,58 @@ export class MainComponent implements OnInit {
   }
 
   // ***********************************上传文件******************************
-  // 选择文件
-  public getFile(event): void {
-    this.file = event.target.files[0];
-    this.formData.append('file', event.target.files[0]);
-    console.log(this.formData);
+
+  // 点击隐藏的input
+  public importClick(event: any): void {
+    event.click();
   }
-  // 文件上传
-  public uploadfile(): void {
-    // this.req.test({page: 1});
+  // 定义事件，选择文件
+  public selectedFileOnChanged(event: any) {
+    this.formData.append('uploadfile', event.srcElement.files[0]);
+    this.req.fileUpload(this.formData).subscribe(
+      value => {
+        if (value) {
+        event.srcElement.value = '';
+          this.req.fileImport().subscribe(
+            value1 => {
+              window.alert(value1.msg);
+              this.Update();
+            }
+          );
+        }
+      }
+    );
+    /*if (this.uploader.queue[0]) {
+      this.uploadFile();
+    }*/
+  }
+  // D: 定义事件，上传文件
+  public uploadFile() {
+    // 上传
+    console.log(this.uploader.queue[0]);
+    this.uploader.queue[0].onSuccess = function (response, status, headers) {
+      // 上传文件成功
+      if (status === 200) {
+        // 上传文件后获取服务器返回的数据
+        let tempRes = JSON.parse(response);
+        console.log(tempRes);
+      } else {
+        // 上传文件后获取服务器返回的数据错误
+        alert('');
+      }
+    };
+    // 开始上传
+    this.uploader.queue[0].upload();
   }
 
-  public test() {
-    this.req.test({page: 1}).subscribe(
-      value => console.log(value)
+// ***********************************导出文件******************************
+  public exportClick(): void {
+    this.req.fileExport().subscribe(
+      value => {
+        if (value.success) {
+          window.open('http://www.hry520.com/upload/user.xlsx');
+        }
+      }
     );
   }
 }

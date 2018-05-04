@@ -14,12 +14,17 @@
         <button type="button" class="btn btn-default" (click)="deleteProLine()">
           <span class="glyphicon glyphicon-trash"></span>删除
         </button>
-        <button type="button" class="btn btn-default" (click)="uploadClick()">
+        <button type="button" class="btn btn-default" (click)="importClick(uploadfile)">
           <span class="glyphicon glyphicon-search"></span>导入excel表
         </button>
-        <button type="button" class="btn btn-default">
+        <button type="button" class="btn btn-default" (click)="exportClick()">
           <span class="glyphicon glyphicon-search"></span>导出excel表
         </button>
+        <div class="form-group" [hidden]="true">
+          <label for="uploadfile">文件</label>
+          <input #uploadfile type="file" id="uploadfile" name="uploadfile" (change)="selectedFileOnChanged($event)">
+        </div>
+        <!--<input type="file" ng2FileSelect [uploader]="uploader" (change)="selectedFileOnChanged($event)" />-->
       </div>
     </div>
     <div class="row content">
@@ -79,16 +84,6 @@
     </div>
   </div>
 
-  <form class="form-horizontal" (submit)="uploadfile()">
-    <div class="form-group">
-      <label>上传文件:</label>
-      <div>
-        <input type="file" (change)="getFile($event)" class="form-control">
-      </div>
-    </div>
-    <input type="submit" class="btn btn-success" value="上传">
-  </form>
-  <button class="btn btn-danger" (click)="test()">测试按钮</button>
 <!--增加人员模态框-->
 <ng-template #add>
   <div class="modal-header">
