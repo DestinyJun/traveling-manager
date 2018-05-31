@@ -38,6 +38,7 @@ export class LoginComponent implements OnInit {
     if (this.myFromModule.valid) {
       this.loginService.getLogin(this.myFromModule.value).subscribe((data) => {
         if (data.success) {
+          console.log(data);
           // 本地存储信息
           for ( let i in data) {
             if (data.hasOwnProperty(i)) {
@@ -45,7 +46,7 @@ export class LoginComponent implements OnInit {
             }
           }
           window.alert('登陆成功');
-          this.router.navigate(['/home']);
+          this.router.navigate(['/home', {id: data.obj.id}]);
         } else {
           this.loginSuccess = data.success;
           this.loginMsg = data.msg;

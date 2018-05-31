@@ -9,7 +9,9 @@
   font-weight: bold;
   line-height: 50px;
 }
-
+.form-horizontal{
+  padding: 15px;
+}
 
 .user{
 
@@ -20,7 +22,9 @@
   padding-right: 15px;
   line-height: 50px;
 }
-
+.user-admin:hover{
+  cursor: pointer;
+}
 .user-photo>img{
   width: 40px;
   height: 40px;

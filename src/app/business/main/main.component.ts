@@ -292,6 +292,7 @@ export class MainComponent implements OnInit {
       value => {
         if (value.success) {
           let a = window.confirm('导出成功');
+          this.Update();
           if (a) {
             window.open('http://www.hry520.com/upload/user.xlsx');
           }

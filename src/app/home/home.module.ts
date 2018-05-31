@@ -6,11 +6,15 @@ import {HeaderComponent} from './header/header.component';
 import {SidebarComponent} from './sidebar/sidebar.component';
 import {FooterComponent} from './footer/footer.component';
 import {LoginGuard} from '../shared/login.guard';
+import {ModalModule} from 'ngx-bootstrap';
+import {ReactiveFormsModule} from '@angular/forms';
 
 @NgModule({
   imports: [
     CommonModule,
     HomeRoutersModule,
+    ReactiveFormsModule,
+    ModalModule.forRoot(),
   ],
   declarations: [
     HomeComponent,

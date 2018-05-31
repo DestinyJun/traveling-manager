@@ -10,6 +10,10 @@
           <!--<img class="rounded-circle" src="../../../assets/Nasta.png" alt="">-->
           <div class="user-photo-toggle" [hidden]="infoToggle">
             <ul class="list-group">
+              <li class="list-group-item" (click)="openProLineAdd(add)">
+                <i class="fa fa-key" aria-hidden="true"></i>
+                <span>密码修改</span>
+              </li>
               <li class="list-group-item" [routerLink]="['/login']">
                 <i class="fa fa-sign-out" aria-hidden="true"></i>
                 <span>退出</span>
@@ -105,3 +109,32 @@
     </div>
   </div>
 </nav>
+<!--增加人员模态框-->
+<ng-template #add>
+  <div class="modal-header">
+    <h4 class="modal-title pull-left">密码修改</h4>
+  </div>
+  <div class="modal-body">
+    <form class="form-horizontal" [formGroup]="prolineAddForm">
+      <div class="form-group" [ngClass]="{'has-error': prolineAddForm.get('password').invalid && (prolineAddForm.get('password').dirty || prolineAddForm.get('password').touched)}">
+        <label for="password">请输入新密码:</label>
+        <input type="text" class="form-control" formControlName="password" id="password">
+        <div class="text-danger" *ngIf="prolineAddForm.get('password').invalid && (prolineAddForm.get('password').dirty || prolineAddForm.get('password').touched)">
+          <span *ngIf="prolineAddForm.get('password').errors?.required">编号为必填项</span>
+          <span *ngIf="prolineAddForm.get('password').errors?.minlength">编号长度为6位</span>
+        </div>
+      </div>
+    </form>
+    <div class="clearfix"></div>
+    <br>
+    <div class="text-center">
+      <button type="button" class="btn btn-info" aria-label="Close" (click)="prolineAdd(); modalRef.hide()">
+        确定修改
+      </button>
+      <button type="button" class="btn btn-danger" aria-label="Close" (click)="modalRef.hide()">
+        取消
+      </button>
+    </div>
+    <br>
+  </div>
+</ng-template>

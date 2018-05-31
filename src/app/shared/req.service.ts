@@ -10,6 +10,11 @@ export class ReqService {
     return this.http.get('/import/loginWeb', {params});
   }
 
+  // 密码修改
+  public updatePassword(params): Observable<any> {
+    return this.http.get('/import/user/updatePassword', {params});
+  }
+
   // 用户列表
   public getUserList(params): Observable<any> {
     return this.http.get('/import/user/list', {params});
